@@ -451,15 +451,6 @@ type GlobalSeoField {
   twitterAccount: String
 }
 
-union HomeModelStructuredTextBlocksField = ImageBlockRecord | ImageGalleryBlockRecord | VideoBlockRecord
-
-type HomeModelStructuredTextField {
-  blocks: [HomeModelStructuredTextBlocksField!]!
-  inlineBlocks: [String!]!
-  links: [HomeRecord!]!
-  value: JsonField!
-}
-
 """Record of type 📝 Home (home)"""
 type HomeRecord implements RecordInterface {
   _createdAt: DateTime!
@@ -482,8 +473,10 @@ type HomeRecord implements RecordInterface {
   _updatedAt: DateTime!
   id: ItemId!
   seo: SeoField
-  seoAnalysis: JsonField
-  structuredText: HomeModelStructuredTextField!
+  subtitle(
+    """Process content as markdown"""
+    markdown: Boolean
+  ): String
   title: String!
 }
 
