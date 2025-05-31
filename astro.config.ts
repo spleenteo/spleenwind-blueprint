@@ -1,7 +1,7 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
@@ -22,8 +22,10 @@ const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroInteg
   hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
 
 export default defineConfig({
-  output: 'static',
-
+  output: 'server',
+  security: {
+    checkOrigin: false,
+  },
   integrations: [
     tailwind({
       applyBaseStyles: false,
@@ -86,5 +88,34 @@ export default defineConfig({
         '~': path.resolve(__dirname, './src'),
       },
     },
+  },
+  env: {
+    schema: {
+      DATOCMS_PUBLISHED_CONTENT_CDA_TOKEN: envField.string({
+        context: 'server',
+        access: 'secret',
+      }),
+      DATOCMS_DRAFT_CONTENT_CDA_TOKEN: envField.string({
+        context: 'server',
+        access: 'secret',
+      }),
+      DATOCMS_CMA_TOKEN: envField.string({
+        context: 'server',
+        access: 'secret',
+      }),
+      SECRET_API_TOKEN: envField.string({
+        context: 'server',
+        access: 'secret',
+      }),
+      SIGNED_COOKIE_JWT_SECRET: envField.string({
+        context: 'server',
+        access: 'secret',
+      }),
+      DRAFT_MODE_COOKIE_NAME: envField.string({
+        context: 'client',
+        access: 'public',
+      }),
+    },
+    validateSecrets: true,
   },
 });
