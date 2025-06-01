@@ -1,0 +1,111 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import { getCurrentLocale, getFallbackLocale, isValidLocale } from '~/lib/i18n';
+
+// Get and validate current locale
+const { locale } = Astro.params;
+const defaultLocale = await getFallbackLocale();
+
+// Validate locale is provided
+if (!locale) {
+  return Astro.redirect('/en/');
+}
+
+// Validate the locale
+const isValid = await isValidLocale(locale);
+if (!isValid) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Locale not found',
+  });
+}
+
+const currentLocale = locale;
+
+import Hero from '~/components/widgets/Hero.astro';
+import Note from '~/components/widgets/Note.astro';
+import Features from '~/components/widgets/Features.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Content from '~/components/widgets/Content.astro';
+import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import Stats from '~/components/widgets/Stats.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+// Locale already validated and set above
+
+import { graphql } from '~/lib/datocms/graphql';
+import { TagFragment } from '~/lib/datocms/commonFragments';
+import { executeQuery } from '~/lib/datocms/executeQuery';
+import { isDraftModeEnabled } from '~/lib/draftMode';
+import { DraftModeQueryListener } from '~/components/DraftModeQueryListener';
+
+const metadata = {
+  title: 'AstroWind — Free template for creating websites with Astro + Tailwind CSS',
+  ignoreTitleTemplate: true,
+};
+
+const query = graphql(
+  `
+    query HomePageQuery($locale: SiteLocale = en) {
+      home(locale: $locale) {
+        title
+        subtitle
+        seo {
+          description
+          title
+        }
+        _publishedAt
+        _updatedAt
+        _seoMetaTags {
+          ...TagFragment
+        }
+      }
+    }
+  `,
+  [TagFragment]
+);
+const draftModeEnabled = isDraftModeEnabled(Astro.cookies);
+const { home } = await executeQuery(query, {
+  includeDrafts: draftModeEnabled,
+  variables: { locale: currentLocale },
+});
+
+if (!home) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Home page not found',
+  });
+}
+---
+
+<Layout additionalSeo={home._seoMetaTags}>
+  <!-- Hero Widget ******************* -->
+  <Hero
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Get template',
+        href: 'https://github.com/onwidget/astrowind',
+        target: '_blank',
+        icon: 'tabler:download',
+      },
+      { text: 'Learn more', href: '#features' },
+    ]}
+    image={{ src: '~/assets/images/hero-image.png', alt: 'AstroWind Hero Image' }}
+  >
+    <Fragment slot="title">
+      {home.title}
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      <span class="hidden sm:inline">
+        <span class="font-semibold"> {home.subtitle}</span>
+      </span>
+    </Fragment>
+    <a href="/design-system" data-astro-prefetch> Take a look at the static components you can use </a>
+
+    {draftModeEnabled && <DraftModeQueryListener query={query} variables={{ locale: currentLocale }} />}
+  </Hero>
+</Layout>

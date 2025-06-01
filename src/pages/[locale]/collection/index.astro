@@ -1,0 +1,63 @@
+---
+import { query } from './_graphql';
+import { executeQuery } from '~/lib/datocms/executeQuery';
+import { getCurrentLocale, getFallbackLocale, isValidLocale } from '~/lib/i18n';
+
+import Layout from '~/layouts/PageLayout.astro';
+import Headline from '~/components/blog/Headline.astro';
+
+export const prerender = false;
+
+export async function getStaticPaths() {
+  const locales = await import('~/lib/i18n').then((m) => m.default());
+  return locales.map((locale: string) => ({
+    params: { locale },
+  }));
+}
+
+// Get and validate current locale
+const { locale } = Astro.params;
+const defaultLocale = await getFallbackLocale();
+
+// Validate locale is provided
+if (!locale) {
+  return Astro.redirect('/en/collection');
+}
+
+// Validate the locale
+const isValid = await isValidLocale(locale);
+if (!isValid) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Locale not found',
+  });
+}
+
+const { allPages, _allPagesMeta } = await executeQuery(query);
+const totalEntries = _allPagesMeta.count;
+---
+
+<Layout>
+  <Headline
+    subtitle="A statically generated blog example with news, tutorials, resources and other interesting content related to AstroWind"
+  >
+    Collection
+    <h2>Published items: {totalEntries}</h2>
+  </Headline>
+
+  <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    {
+      allPages?.map((page) => (
+        <article class="bg-white rounded-lg shadow-md overflow-hidden p-6">
+          <h3 class="text-xl font-semibold mb-3">
+            <a href={`/${locale}/collection/${page.slug}`} class="hover:text-blue-600 transition-colors">
+              {page.title}
+            </a>
+          </h3>
+          <p class="text-gray-600">Slug: {page.slug}</p>
+          <p class="text-sm text-gray-500">ID: {page.id}</p>
+        </article>
+      ))
+    }
+  </div>
+</Layout>

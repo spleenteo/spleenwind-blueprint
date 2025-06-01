@@ -27,9 +27,20 @@ metadata:
     site: '@onwidget'
     cardType: summary_large_image
 
+# Configurazione i18n per AstroWind (UI e metadata)
 i18n:
-  language: en
-  textDirection: ltr
+  defaultLocale: en
+  locales:
+    en:
+      language: en
+      textDirection: ltr
+      title: AstroWind
+      description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
+    it:
+      language: it
+      textDirection: ltr
+      title: AstroWind
+      description: "\U0001F680 Adatto per Startup, Piccole Imprese, Siti Web Sass, Portfolio Professionali, Siti Web di Marketing, Landing Page e Blog."
 
 apps:
   blog:

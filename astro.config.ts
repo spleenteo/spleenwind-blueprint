@@ -14,6 +14,7 @@ import type { AstroIntegration } from 'astro';
 import astrowind from './vendor/integration';
 
 import { readingTimeRemarkPlugin, responsiveTablesRehypePlugin, lazyImagesRehypePlugin } from './src/utils/frontmatter';
+import getAvailableLocales, { getFallbackLocale } from './src/lib/i18n';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -21,11 +22,42 @@ const hasExternalScripts = false;
 const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroIntegration)[] = []) =>
   hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
 
+// Funzione per ottenere la configurazione i18n dinamicamente
+async function getI18nConfig() {
+  try {
+    const locales = await getAvailableLocales();
+    const defaultLocale = await getFallbackLocale();
+
+    return {
+      locales,
+      defaultLocale,
+      routing: {
+        prefixDefaultLocale: true, // All locales with prefix
+      },
+    };
+  } catch (error) {
+    console.warn('Could not fetch locales from DatoCMS, using static config:', error);
+    // Configurazione di fallback
+    return {
+      locales: ['en', 'it'],
+      defaultLocale: 'en',
+      routing: {
+        prefixDefaultLocale: true, // All locales with prefix
+      },
+    };
+  }
+}
+
 export default defineConfig({
   output: 'server',
+  trailingSlash: 'ignore',
   security: {
     checkOrigin: false,
   },
+
+  // Configurazione i18n dinamica
+  i18n: await getI18nConfig(),
+
   integrations: [
     tailwind({
       applyBaseStyles: false,

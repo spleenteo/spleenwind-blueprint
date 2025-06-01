@@ -19,9 +19,7 @@
     "fix": "npm run fix:eslint && npm run fix:prettier",
     "fix:eslint": "eslint --fix .",
     "fix:prettier": "prettier -w .",
-
     "prepare": "bun run simple-git-hooks && bun run generate-schema",
-
     "generate-schema": "dotenv -c -- bash -c 'gql.tada generate schema https://graphql.datocms.com --header \"X-Exclude-Invalid: true\" --header \"Authorization: $DATOCMS_PUBLISHED_CONTENT_CDA_TOKEN\"'",
     "lint": "prettier --check .",
     "format": "bun x prettier . --write"
@@ -30,6 +28,7 @@
     "pre-commit": "bun run format"
   },
   "dependencies": {
+    "@anthropic-ai/claude-code": "^1.0.6",
     "@astrojs/rss": "^4.0.11",
     "@astrojs/sitemap": "^3.3.0",
     "@astrolib/analytics": "^0.6.1",

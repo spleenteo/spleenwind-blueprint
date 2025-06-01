@@ -23,6 +23,7 @@ npm run generate-schema  # Generate GraphQL schema from DatoCMS
 ## Architecture Overview
 
 ### Core Technology Stack
+
 - **Astro 5.0** with server-side rendering (`output: 'server'`)
 - **DatoCMS** headless CMS integration with GraphQL
 - **i18n** with dynamic locale detection from DatoCMS
@@ -30,6 +31,7 @@ npm run generate-schema  # Generate GraphQL schema from DatoCMS
 - **TypeScript** with strict type checking
 
 ### Key Integrations
+
 - **DatoCMS**: Content management via GraphQL API with draft/published modes
 - **Internationalization**: Dynamic locale configuration fetched from DatoCMS (`src/lib/i18n.ts`)
 - **Environment Variables**: Validated schema in `astro.config.ts` for DatoCMS tokens
@@ -38,18 +40,21 @@ npm run generate-schema  # Generate GraphQL schema from DatoCMS
 ### Project Structure Patterns
 
 #### Content Management
+
 - `src/lib/datocms/`: GraphQL queries and execution utilities
-- `src/pages/[locale]/`: Internationalized routing structure  
+- `src/pages/[locale]/`: Internationalized routing structure
 - `src/content/`: Astro content collections for blog posts
 - Dynamic locale detection from DatoCMS replaces static i18n config
 
 #### Component Architecture
+
 - `src/components/widgets/`: Main page sections (Hero, Features, etc.)
 - `src/components/ui/`: Reusable UI primitives
 - `src/components/blog/`: Blog-specific components
 - `src/layouts/`: Page layout templates
 
 #### Configuration
+
 - `src/config.yaml`: Site configuration, SEO metadata, and i18n settings
 - `astro.config.ts`: Dynamic i18n configuration from DatoCMS
 - `tailwind.config.js`: Custom design system with CSS variables
@@ -57,26 +62,31 @@ npm run generate-schema  # Generate GraphQL schema from DatoCMS
 ### Development Considerations
 
 #### Environment Setup
+
 Required environment variables (see `.env.example`):
+
 - `DATOCMS_PUBLISHED_CONTENT_CDA_TOKEN`
-- `DATOCMS_DRAFT_CONTENT_CDA_TOKEN` 
+- `DATOCMS_DRAFT_CONTENT_CDA_TOKEN`
 - `DATOCMS_CMA_TOKEN`
 - `SECRET_API_TOKEN`
 - `SIGNED_COOKIE_JWT_SECRET`
 
 #### DatoCMS Integration
+
 - Uses `gql.tada` for type-safe GraphQL queries
 - Draft mode support for content preview
 - Automatic schema generation from DatoCMS endpoint
 - Dynamic locale configuration fetched at build time
 
 #### Code Quality
+
 - ESLint + Prettier with Astro-specific rules
 - TypeScript strict mode enabled
 - Automatic formatting on commit via git hooks
 - Use `npm run check` before committing changes
 
 #### Styling System
+
 - Tailwind CSS with custom color variables in `src/assets/styles/tailwind.css`
 - Design customization in `src/components/CustomStyles.astro`
 - Dark mode support via class strategy

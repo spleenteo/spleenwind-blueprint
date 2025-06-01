@@ -31,7 +31,7 @@ const draftModeEnabled = isDraftModeEnabled(Astro.cookies);
       } else {
         const token = prompt(
           'To enter Draft Mode, you need to insert the PRIVATE_SECRET_API_TOKEN:',
-          'secretTokenProtectingWebhookEndpointsFromBeingCalledByAnyone',
+          'secretTokenProtectingWebhookEndpointsFromBeingCalledByAnyone'
         );
         if (!token) {
           return;

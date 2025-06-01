@@ -1,0 +1,73 @@
+---
+import { query } from './_graphql';
+import { executeQuery } from '~/lib/datocms/executeQuery';
+import { getCurrentLocale, getFallbackLocale, isValidLocale } from '~/lib/i18n';
+
+import Layout from '~/layouts/PageLayout.astro';
+import Headline from '~/components/blog/Headline.astro';
+
+export const prerender = false;
+
+export async function getStaticPaths() {
+  // Query per ottenere tutti gli slug
+  const allPagesQuery = `
+    query {
+      allPages {
+        id
+        slug
+        title
+      }
+    }
+  `;
+
+  const locales = await import('~/lib/i18n').then((m) => m.default());
+  const { allPages } = await executeQuery(allPagesQuery);
+
+  // Generate paths for all locale/slug combinations
+  const paths = [];
+  for (const locale of locales) {
+    for (const page of allPages) {
+      paths.push({
+        params: { locale, slug: page.slug },
+      });
+    }
+  }
+
+  return paths;
+}
+
+// Get and validate current locale
+const { locale, slug } = Astro.params;
+const defaultLocale = await getFallbackLocale();
+
+// Validate the locale
+if (locale) {
+  const isValid = await isValidLocale(locale);
+  if (!isValid) {
+    return new Response(null, {
+      status: 404,
+      statusText: 'Locale not found',
+    });
+  }
+}
+const { page } = await executeQuery(query, {
+  variables: { slug },
+});
+
+if (!page) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Page not found',
+  });
+}
+---
+
+<Layout>
+  <Headline
+    subtitle="A statically generated blog example with news, tutorials, resources and other interesting content related to AstroWind"
+  >
+    {page.title}
+  </Headline>
+
+  <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3"></div>
+</Layout>

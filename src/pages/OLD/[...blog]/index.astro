@@ -10,7 +10,6 @@
  const { post } = Astro.props as Props;
  */
 
-
 import type { GetStaticPaths } from 'astro';
 
 import { query } from './_graphql';
@@ -26,7 +25,6 @@ const { allPages, _allPagesMeta } = await executeQuery(Astro, query, {});
 const posts = allPages; // rinomina per chiarezza
 const totalEntries = _allPagesMeta.count;
 
-
 export const getStaticPaths = (async () => {
   return await getStaticPathsBlogPost();
 }) satisfies GetStaticPaths;
@@ -35,8 +33,9 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 ---
 
 <Layout>
-   <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-      {posts.map((post) => (
+  <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    {
+      posts.map((post) => (
         <article class="bg-white rounded-lg shadow-md overflow-hidden">
           <div class="p-6">
             <h2 class="text-xl font-semibold mb-3">
@@ -44,13 +43,12 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
                 {post.title}
               </a>
             </h2>
-            <time class="text-sm text-gray-500">
-              {new Date(post._publishedAt).toLocaleDateString('it-IT')}
-            </time>
+            <time class="text-sm text-gray-500">{new Date(post._publishedAt).toLocaleDateString('it-IT')}</time>
           </div>
         </article>
-      ))}
-    </div>
+      ))
+    }
+  </div>
   <ToBlogLink />
   <RelatedPosts post={post} />
 </Layout>
