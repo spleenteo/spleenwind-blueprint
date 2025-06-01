@@ -114,14 +114,36 @@ Inside **AstroWind** template, you'll see the following folders and files:
 │   │   ├── MarkdownLayout.astro
 │   │   └── PageLayout.astro
 │   ├── pages/
-│   │   ├── [...blog]/
-│   │   │   ├── [category]/
-│   │   │   ├── [tag]/
-│   │   │   ├── [...page].astro
-│   │   │   └── index.astro
+│   │   ├── [locale]/
+│   │   │   ├── collection/
+│   │   │   │   ├── [slug]/
+│   │   │   │   │   ├── _graphql.ts
+│   │   │   │   │   └── index.astro
+│   │   │   │   ├── _graphql.ts
+│   │   │   │   └── index.astro
+│   │   │   ├── index.astro
+│   │   │   └── rss.xml.ts
+│   │   ├── OLD/
+│   │   │   └── [...blog]/
+│   │   │       ├── [category]/
+│   │   │       │   └── [...page].astro
+│   │   │       ├── [tag]/
+│   │   │       │   └── [...page].astro
+│   │   │       ├── [...page].astro
+│   │   │       ├── _graphql.ts
+│   │   │       └── index.astro
+│   │   ├── design-system/
+│   │   │   ├── homes/
+│   │   │   ├── landing/
+│   │   │   ├── about.astro
+│   │   │   ├── contact.astro
+│   │   │   ├── index.astro
+│   │   │   ├── pricing.astro
+│   │   │   ├── privacy.md
+│   │   │   ├── services.astro
+│   │   │   └── terms.md
 │   │   ├── index.astro
 │   │   ├── 404.astro
-│   │   ├-- rss.xml.ts
 │   │   └── ...
 │   ├── utils/
 │   ├── config.yaml
