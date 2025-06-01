@@ -38,7 +38,7 @@ const NAVIGATION_QUERY = graphql(`
 
 // Route mapping configuration
 export const ROUTE_MAPPING = {
-  'Page': '/collection',
+  Page: '/collection',
   // Add more model mappings as needed
   // 'BlogPost': '/blog',
   // 'Product': '/products',
@@ -57,35 +57,37 @@ export function buildLocalizedUrl(slug: string, modelType: ModelType, locale: st
 export async function transformNavigationData(navData: any, currentLocale?: string) {
   const defaultLocale = await getFallbackLocale();
   const locale = currentLocale || defaultLocale;
-  
-  return navData.admin.navLinks.map((item: any) => {
-    switch (item.__typename) {
-      case 'MenuDropdownRecord':
-        return {
-          text: item.staticLabel,
-          links: item.pages.map((pageItem: any) => ({
-            text: pageItem.label || pageItem.page.title,
-            href: buildLocalizedUrl(pageItem.page.slug, 'Page', locale, defaultLocale)
-          }))
-        };
-      
-      case 'MenuExternalItemRecord':
-        return {
-          text: item.label,
-          href: item.url
-        };
-      
-      case 'MenuItemRecord':
-        return {
-          text: item.label,
-          href: buildLocalizedUrl(item.page.slug, 'Page', locale, defaultLocale)
-        };
-      
-      default:
-        console.warn('Unknown menu item type:', item.__typename);
-        return null;
-    }
-  }).filter(Boolean);
+
+  return navData.admin.navLinks
+    .map((item: any) => {
+      switch (item.__typename) {
+        case 'MenuDropdownRecord':
+          return {
+            text: item.staticLabel,
+            links: item.pages.map((pageItem: any) => ({
+              text: pageItem.label || pageItem.page.title,
+              href: buildLocalizedUrl(pageItem.page.slug, 'Page', locale, defaultLocale),
+            })),
+          };
+
+        case 'MenuExternalItemRecord':
+          return {
+            text: item.label,
+            href: item.url,
+          };
+
+        case 'MenuItemRecord':
+          return {
+            text: item.label,
+            href: buildLocalizedUrl(item.page.slug, 'Page', locale, defaultLocale),
+          };
+
+        default:
+          console.warn('Unknown menu item type:', item.__typename);
+          return null;
+      }
+    })
+    .filter(Boolean);
 }
 
 // Main function to get navigation data
