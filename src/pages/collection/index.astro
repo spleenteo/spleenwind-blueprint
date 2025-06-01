@@ -1,0 +1,39 @@
+---
+import { query } from './_graphql';
+import { executeQuery } from '~/lib/datocms/executeQuery';
+
+import Layout from '~/layouts/PageLayout.astro';
+import Headline from '~/components/blog/Headline.astro';
+
+
+export const prerender = true;
+
+const { allPages, _allPagesMeta } = await executeQuery(query);
+const totalEntries = _allPagesMeta.count;
+
+---
+<Layout>
+  <Headline
+    subtitle="A statically generated blog example with news, tutorials, resources and other interesting content related to AstroWind"
+  >
+    Collection
+    <h2>Published items: {totalEntries}</h2>
+  </Headline>
+
+  <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">    
+    {allPages?.map((page) => (
+      <article class="bg-white rounded-lg shadow-md overflow-hidden p-6">
+        <h3 class="text-xl font-semibold mb-3">
+          <a 
+            href={`/collection/${page.slug}`} 
+            class="hover:text-blue-600 transition-colors"
+          >
+            {page.title}
+          </a>
+        </h3>
+        <p class="text-gray-600">Slug: {page.slug}</p>
+        <p class="text-sm text-gray-500">ID: {page.id}</p>
+      </article>
+    ))}
+  </div>
+</Layout>
