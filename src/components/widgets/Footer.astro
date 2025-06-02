@@ -28,7 +28,7 @@ const currentLocale = await getLocaleFromUrl(Astro.url);
 
 // Get footer data from DatoCMS, fallback to props
 const footerData = await getFooterData(currentLocale);
-const { links, socialLinks, footNote, secondaryLinks } = footerData;
+const { links, socialLinks, footNote, secondaryLinks, logo } = footerData;
 ---
 
 <footer class:list={[{ dark: theme === 'dark' }, 'relative border-t border-gray-200 dark:border-slate-800 not-prose']}>
@@ -39,7 +39,18 @@ const { links, socialLinks, footNote, secondaryLinks } = footerData;
     <div class="grid grid-cols-12 gap-4 gap-y-8 sm:gap-8 py-8 md:py-12">
       <div class="col-span-12 lg:col-span-4">
         <div class="mb-2">
-          <a class="inline-block font-bold text-xl" href={getHomePermalink()}>{SITE?.name}</a>
+          <a class="inline-block font-bold text-xl" href={getHomePermalink()}>
+            {logo ? (
+              <img 
+                src={logo.url} 
+                alt={logo.alt || SITE?.name || 'Logo'} 
+                title={logo.title || SITE?.name || 'Logo'}
+                class="h-8 w-auto" 
+              />
+            ) : (
+              <span>{SITE?.name}</span>
+            )}
+          </a>
         </div>
         <div class="text-sm text-muted flex gap-1">
           {

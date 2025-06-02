@@ -6,6 +6,11 @@ import getAvailableLocales, { getFallbackLocale } from './i18n';
 const NAVIGATION_QUERY = graphql(`
   query NavigationQuery {
     admin {
+      logo {
+        url
+        alt
+        title
+      }
       navLinks {
         ... on MenuDropdownRecord {
           __typename
@@ -40,6 +45,11 @@ const NAVIGATION_QUERY = graphql(`
 const FOOTER_QUERY = graphql(`
   query FooterQuery {
     admin {
+      logo {
+        url
+        alt
+        title
+      }
       footerLinks {
         navLinks {
           ... on MenuExternalItemRecord {
@@ -193,11 +203,22 @@ export async function transformFooterData(footerData: any, currentLocale?: strin
 export async function getNavigationData(currentLocale?: string) {
   try {
     const result = await executeQuery(NAVIGATION_QUERY);
-    return await transformNavigationData(result, currentLocale);
+    const navigationData = await transformNavigationData(result, currentLocale);
+    return {
+      links: navigationData,
+      logo: result.admin.logo ? {
+        url: result.admin.logo.url,
+        alt: result.admin.logo.alt,
+        title: result.admin.logo.title,
+      } : null,
+    };
   } catch (error) {
     console.error('Error fetching navigation data from DatoCMS:', error);
     // Fallback to empty navigation
-    return [];
+    return {
+      links: [],
+      logo: null,
+    };
   }
 }
 
@@ -205,7 +226,15 @@ export async function getNavigationData(currentLocale?: string) {
 export async function getFooterData(currentLocale?: string) {
   try {
     const result = await executeQuery(FOOTER_QUERY);
-    return await transformFooterData(result, currentLocale);
+    const footerData = await transformFooterData(result, currentLocale);
+    return {
+      ...footerData,
+      logo: result.admin.logo ? {
+        url: result.admin.logo.url,
+        alt: result.admin.logo.alt,
+        title: result.admin.logo.title,
+      } : null,
+    };
   } catch (error) {
     console.error('Error fetching footer data from DatoCMS:', error);
     // Fallback to empty footer
@@ -214,6 +243,7 @@ export async function getFooterData(currentLocale?: string) {
       socialLinks: [],
       footNote: '',
       secondaryLinks: [],
+      logo: null,
     };
   }
 }
