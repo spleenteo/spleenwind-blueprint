@@ -1,23 +1,44 @@
 ---
+import { getNavigationData } from '~/lib/navigation';
+import { getLocaleFromUrl } from '~/lib/i18n';
+import getAvailableLocales from '~/lib/i18n';
 
+// Get current locale and available locales
+const currentLocale = await getLocaleFromUrl(Astro.url);
+const availableLocales = await getAvailableLocales();
+
+// Get callout data from DatoCMS
+const { callout } = await getNavigationData(currentLocale);
 ---
 
-<div
-  class="dark text-muted text-sm bg-black dark:bg-transparent dark:border-b dark:border-slate-800 dark:text-slate-400 hidden md:flex gap-1 overflow-hidden px-3 py-2 relative text-ellipsis whitespace-nowrap"
->
-  <span
-    class="dark:bg-slate-700 bg-white/40 dark:text-slate-300 font-semibold px-1 py-0.5 text-xs mr-0.5 rtl:mr-0 rtl:ml-0.5 inline-block"
-    >NEW</span
-  >
-  <a href="https://astro.build/blog/astro-570/" class="text-muted hover:underline dark:text-slate-400 font-medium"
-    >Astro v5.7 is now available! »</a
-  >
-  <a
-    target="_blank"
-    rel="noopener"
-    class="ltr:ml-auto rtl:mr-auto w-[5.6rem] h-[1.25rem] ml-auto bg-contain inline-block bg-[url(https://img.shields.io/github/stars/onwidget/astrowind.svg?style=social&label=Stars&maxAge=86400)]"
-    title="If you like AstroWind, give us a star."
-    href="https://github.com/onwidget/astrowind"
-  >
-  </a>
-</div>
+{
+  callout.text && (
+    <div
+      class="dark text-muted text-sm dark:bg-transparent dark:border-b dark:border-slate-800 dark:text-slate-400 hidden md:flex gap-1 overflow-hidden px-3 py-2 relative text-ellipsis whitespace-nowrap"
+      style={`background-color: ${callout.backgroundColor}`}
+    >
+      <div class="flex-1" set:html={callout.text}></div>
+      <div class="ltr:ml-auto rtl:mr-auto flex gap-1">
+        {
+          availableLocales.map((locale, index) => (
+            <Fragment>
+              {index > 0 && <span class="text-white/40">|</span>}
+              <a
+                href={Astro.url.pathname
+                  .replace(`/${currentLocale}/`, `/${locale}/`)
+                  .replace(`/${currentLocale}`, `/${locale}`)}
+                class={`text-xs font-medium transition-colors ${
+                  locale === currentLocale
+                    ? 'text-white'
+                    : 'text-white/60 hover:text-white/80'
+                }`}
+              >
+                {locale.toUpperCase()}
+              </a>
+            </Fragment>
+          ))
+        }
+      </div>
+    </div>
+  )
+}

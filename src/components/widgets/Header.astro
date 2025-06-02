@@ -54,6 +54,9 @@ const navigationData = await getNavigationData(currentLocale);
 const links = navigationData.links.length > 0 ? navigationData.links : propsLinks || [];
 const logo = navigationData.logo;
 
+// Get available locales for mobile menu
+const availableLocales = await import('~/lib/i18n').then((m) => m.default());
+
 const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
 
 // Debug navigation data
@@ -151,6 +154,29 @@ console.log('Navigation data:', links);
             </li>
           ))
         }
+        <li class="md:hidden">
+          <div class="px-4 py-3">
+            <div class="text-sm font-medium mb-2 text-gray-400">Language</div>
+            <div class="flex flex-wrap gap-2">
+              {
+                availableLocales.map((locale) => (
+                  <a
+                    href={Astro.url.pathname
+                      .replace(`/${currentLocale}/`, `/${locale}/`)
+                      .replace(`/${currentLocale}`, `/${locale}`)}
+                    class={`px-2 py-1 text-xs rounded border transition-colors ${
+                      locale === currentLocale
+                        ? 'bg-primary text-white border-primary'
+                        : 'text-muted border-gray-300 hover:border-primary hover:text-primary'
+                    }`}
+                  >
+                    {locale.toUpperCase()}
+                  </a>
+                ))
+              }
+            </div>
+          </div>
+        </li>
       </ul>
     </nav>
     <div

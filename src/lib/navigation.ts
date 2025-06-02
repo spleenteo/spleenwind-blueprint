@@ -11,6 +11,10 @@ const NAVIGATION_QUERY = graphql(`
         alt
         title
       }
+      calloutBackground {
+        hex
+      }
+      calloutText
       navLinks {
         ... on MenuDropdownRecord {
           __typename
@@ -213,6 +217,10 @@ export async function getNavigationData(currentLocale?: string) {
             title: result.admin.logo.title,
           }
         : null,
+      callout: {
+        text: result.admin.calloutText || '',
+        backgroundColor: result.admin.calloutBackground?.hex || '#000000',
+      },
     };
   } catch (error) {
     console.error('Error fetching navigation data from DatoCMS:', error);
@@ -220,6 +228,10 @@ export async function getNavigationData(currentLocale?: string) {
     return {
       links: [],
       logo: null,
+      callout: {
+        text: '',
+        backgroundColor: '#000000',
+      },
     };
   }
 }

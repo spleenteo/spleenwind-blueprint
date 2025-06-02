@@ -19,13 +19,6 @@ type AdminModelNavLinksFieldListListNonNullMultiLocaleField {
   value: [AdminModelNavLinksField!]!
 }
 
-type AdminModelTextField {
-  blocks: [String!]!
-  inlineBlocks: [String!]!
-  links: [String!]!
-  value: JsonField!
-}
-
 """
 Record of type ⚙️ Admin (admin)
 """
@@ -61,12 +54,18 @@ type AdminRecord implements RecordInterface {
   _status: ItemStatus!
   _unpublishingScheduledAt: DateTime
   _updatedAt: DateTime!
-  background: ColorField!
   brandColor: ColorField
+  calloutBackground: ColorField!
+  calloutText(
+    """
+    Process content as markdown
+    """
+    markdown: Boolean
+  ): String
   footerLinks: [FooterMenuWidgetRecord!]!
   footerText: AdminModelFooterTextField
   id: ItemId!
-  legalText: AdminModelLegalTextField
+  legalText: AdminModelLegalTextField!
   logo: AltFileField
   navLinks(
     """
@@ -80,7 +79,6 @@ type AdminRecord implements RecordInterface {
     fallbackLocales: [SiteLocale!]
   ): [AdminModelNavLinksField!]!
   socialLinks: [SocialLinkRecord!]!
-  text: AdminModelTextField!
 }
 
 type AltFileField implements FileFieldInterface {
