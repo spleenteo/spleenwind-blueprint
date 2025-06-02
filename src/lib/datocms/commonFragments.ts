@@ -12,3 +12,17 @@ export const TagFragment = graphql(`
     content
   }
 `);
+
+export const HeroBlockFragment = graphql(`
+  fragment HeroBlockFragment on HeroSectionRecord @_unmask {
+    _modelApiKey
+    heroTitle
+    heroSubtitle
+    displayOptions
+    buttons {
+      url
+      label
+      primary
+    }
+  }
+`);

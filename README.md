@@ -15,8 +15,6 @@ Shoutout to OnWidget and Astro team for this Astrowind template that taught me t
 
 📌 [https://astrowind.vercel.app/](https://astrowind.vercel.app/)
 
-
-
 ## Getting started
 
 **AstroWind** tries to give you quick access to creating a website using [Astro 5.0](https://astro.build/) + [Tailwind CSS](https://tailwindcss.com/). It's a free theme which focuses on simplicity, good practices and high performance.
@@ -26,7 +24,6 @@ Very little vanilla javascript is used only to provide basic functionality so th
 In this version the template supports all the options in the `output` configuration, `static`, `hybrid` and `server`, but the blog only works with `prerender = true`. We are working on the next version and aim to make it fully compatible with SSR.
 
 ### Project structure
-
 
 ```
 /
@@ -208,7 +205,6 @@ Clone this repository on your own GitHub account and deploy it to Netlify:
 Clone this repository on your own GitHub account and deploy to Vercel:
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fonwidget%2Fastrowind)
-
 
 ## Acknowledgements
 

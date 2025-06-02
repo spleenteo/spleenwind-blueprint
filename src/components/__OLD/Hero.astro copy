@@ -2,6 +2,8 @@
 import Image from '~/components/common/Image.astro';
 import Button from '~/components/ui/Button.astro';
 
+import type { Hero as Props } from '~/types';
+
 const {
   title = await Astro.slots.render('title'),
   subtitle = await Astro.slots.render('subtitle'),
@@ -13,19 +15,7 @@ const {
 
   id,
   bg = await Astro.slots.render('bg'),
-  
-  // DatoCMS hero block props (typed by GraphQL schema)
-  heroBlock,
 } = Astro.props;
-
-// Use heroBlock data if provided, otherwise fall back to existing props
-const heroTitle = heroBlock?.heroTitle || title;
-const heroSubtitle = heroBlock?.heroSubtitle || subtitle;
-const heroActions = heroBlock?.buttons ? heroBlock.buttons.map(button => ({
-  text: button.label,
-  href: button.url,
-  variant: button.primary ? 'primary' : 'secondary'
-})) : actions;
 ---
 
 <section class="relative md:-mt-[76px] not-prose" {...id ? { id } : {}}>
@@ -47,33 +37,33 @@ const heroActions = heroBlock?.buttons ? heroBlock.buttons.map(button => ({
           )
         }
         {
-          heroTitle && (
+          title && (
             <h1
               class="text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-4 font-heading dark:text-gray-200 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
-              set:html={heroTitle}
+              set:html={title}
             />
           )
         }
         <div class="max-w-3xl mx-auto">
           {
-            heroSubtitle && (
+            subtitle && (
               <p
                 class="text-xl text-muted mb-6 dark:text-slate-300 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
-                set:html={heroSubtitle}
+                set:html={subtitle}
               />
             )
           }
           {
-            heroActions && (
-              <div class="max-w-xs sm:max-w-md m-auto flex flex-nowrap flex-col sm:flex-row sm:justify-center  mt-3.5 gap-4 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade">
-                {Array.isArray(heroActions) ? (
-                  heroActions.map((action) => (
+            actions && (
+              <div class="max-w-xs sm:max-w-md m-auto flex flex-nowrap flex-col sm:flex-row sm:justify-center gap-4 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade">
+                {Array.isArray(actions) ? (
+                  actions.map((action) => (
                     <div class="flex w-full sm:w-auto">
                       <Button {...(action || {})} class="w-full sm:mb-0" />
                     </div>
                   ))
                 ) : (
-                  <Fragment set:html={heroActions} />
+                  <Fragment set:html={actions} />
                 )}
               </div>
             )
