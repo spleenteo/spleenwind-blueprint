@@ -21,7 +21,7 @@ const hasExternalScripts = false;
 const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroIntegration)[] = []) =>
   hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
 
-// Static i18n configuration 
+// Static i18n configuration
 function getI18nConfig() {
   return {
     locales: ['en', 'it'],

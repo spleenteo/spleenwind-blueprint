@@ -83,7 +83,7 @@ const query = graphql(
 const draftModeEnabled = isDraftModeEnabled(Astro.cookies);
 const { home } = await executeQuery(query, {
   includeDrafts: draftModeEnabled,
-  variables: { locale: currentLocale as "en" | "it" },
+  variables: { locale: currentLocale as 'en' | 'it' },
 });
 
 if (!home) {
@@ -132,5 +132,5 @@ if (!home) {
     )
   }
 
-  {draftModeEnabled && <DraftModeQueryListener query={query} variables={{ locale: currentLocale as "en" | "it" }} />}
+  {draftModeEnabled && <DraftModeQueryListener query={query} variables={{ locale: currentLocale as 'en' | 'it' }} />}
 </Layout>

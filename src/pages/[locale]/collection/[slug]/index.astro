@@ -12,7 +12,7 @@ export async function getStaticPaths() {
     // Static fallback for build time - you can extend this with actual data fetching
     const locales = ['en', 'it'];
     const staticSlugs = ['about', 'contact', 'services']; // Add your actual slugs here
-    
+
     const paths: Array<{ params: { locale: string; slug: string } }> = [];
     for (const locale of locales) {
       for (const slug of staticSlugs) {
@@ -21,7 +21,7 @@ export async function getStaticPaths() {
         });
       }
     }
-    
+
     return paths;
   } catch (error) {
     console.error('Error in getStaticPaths:', error);
