@@ -78,18 +78,18 @@ export const ROUTE_MAPPING = {
 
 // Social platform to icon mapping
 export const SOCIAL_ICON_MAPPING = {
-  'facebook': 'tabler:brand-facebook',
-  'twitter': 'tabler:brand-x',
-  'x': 'tabler:brand-x',
-  'instagram': 'tabler:brand-instagram',
-  'linkedin': 'tabler:brand-linkedin',
-  'youtube': 'tabler:brand-youtube',
-  'tiktok': 'tabler:brand-tiktok',
-  'github': 'tabler:brand-github',
-  'telegram': 'tabler:brand-telegram',
-  'whatsapp': 'tabler:brand-whatsapp',
-  'discord': 'tabler:brand-discord',
-  'rss': 'tabler:rss',
+  facebook: 'tabler:brand-facebook',
+  twitter: 'tabler:brand-x',
+  x: 'tabler:brand-x',
+  instagram: 'tabler:brand-instagram',
+  linkedin: 'tabler:brand-linkedin',
+  youtube: 'tabler:brand-youtube',
+  tiktok: 'tabler:brand-tiktok',
+  github: 'tabler:brand-github',
+  telegram: 'tabler:brand-telegram',
+  whatsapp: 'tabler:brand-whatsapp',
+  discord: 'tabler:brand-discord',
+  rss: 'tabler:rss',
 } as const;
 
 type ModelType = keyof typeof ROUTE_MAPPING;
@@ -146,29 +146,31 @@ export async function transformFooterData(footerData: any, currentLocale?: strin
   // Transform footer links into columns
   const links = footerData.admin.footerLinks.map((column: any) => ({
     title: column.widgetLabel,
-    links: column.navLinks.map((item: any) => {
-      switch (item.__typename) {
-        case 'MenuExternalItemRecord':
-          return {
-            text: item.label,
-            href: item.url,
-          };
-        case 'MenuItemRecord':
-          return {
-            text: item.label,
-            href: buildLocalizedUrl(item.page.slug, 'Page', locale, defaultLocale),
-          };
-        default:
-          return null;
-      }
-    }).filter(Boolean),
+    links: column.navLinks
+      .map((item: any) => {
+        switch (item.__typename) {
+          case 'MenuExternalItemRecord':
+            return {
+              text: item.label,
+              href: item.url,
+            };
+          case 'MenuItemRecord':
+            return {
+              text: item.label,
+              href: buildLocalizedUrl(item.page.slug, 'Page', locale, defaultLocale),
+            };
+          default:
+            return null;
+        }
+      })
+      .filter(Boolean),
   }));
 
   // Transform social links
   const socialLinks = footerData.admin.socialLinks.map((social: any) => {
     const platform = social.platform.toLowerCase();
     const icon = SOCIAL_ICON_MAPPING[platform as keyof typeof SOCIAL_ICON_MAPPING];
-    
+
     return {
       ariaLabel: social.platform,
       href: social.url,
