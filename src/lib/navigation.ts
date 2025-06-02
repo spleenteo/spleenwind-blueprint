@@ -210,7 +210,7 @@ export async function getNavigationData(currentLocale?: string) {
     const navigationData = await transformNavigationData(result, currentLocale);
     return {
       links: navigationData,
-      logo: result.admin.logo
+      logo: result.admin?.logo
         ? {
             url: result.admin.logo.url,
             alt: result.admin.logo.alt,
@@ -218,8 +218,8 @@ export async function getNavigationData(currentLocale?: string) {
           }
         : null,
       callout: {
-        text: result.admin.calloutText || '',
-        backgroundColor: result.admin.calloutBackground?.hex || '#000000',
+        text: result.admin?.calloutText || '',
+        backgroundColor: result.admin?.calloutBackground?.hex || '#000000',
       },
     };
   } catch (error) {
@@ -243,7 +243,7 @@ export async function getFooterData(currentLocale?: string) {
     const footerData = await transformFooterData(result, currentLocale);
     return {
       ...footerData,
-      logo: result.admin.logo
+      logo: result.admin?.logo
         ? {
             url: result.admin.logo.url,
             alt: result.admin.logo.alt,

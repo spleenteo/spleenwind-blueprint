@@ -6,13 +6,16 @@ import { getCurrentLocale, getFallbackLocale, isValidLocale } from '~/lib/i18n';
 import Layout from '~/layouts/PageLayout.astro';
 import Headline from '~/components/blog/Headline.astro';
 
-export const prerender = false;
-
 export async function getStaticPaths() {
-  const locales = await import('~/lib/i18n').then((m) => m.default());
-  return locales.map((locale: string) => ({
-    params: { locale },
-  }));
+  try {
+    const locales = ['en', 'it']; // Static fallback for build time
+    return locales.map((locale: string) => ({
+      params: { locale },
+    }));
+  } catch (error) {
+    console.error('Error in getStaticPaths:', error);
+    return [{ params: { locale: 'en' } }];
+  }
 }
 
 // Get and validate current locale

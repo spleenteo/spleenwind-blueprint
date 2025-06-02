@@ -4,6 +4,13 @@ import { SITE, METADATA, APP_BLOG } from 'astrowind:config';
 import { fetchPosts } from '~/utils/blog';
 import { getPermalink } from '~/utils/permalinks';
 
+export async function getStaticPaths() {
+  const locales = ['en', 'it'];
+  return locales.map((locale) => ({
+    params: { locale },
+  }));
+}
+
 export const GET = async () => {
   if (!APP_BLOG.isEnabled) {
     return new Response(null, {

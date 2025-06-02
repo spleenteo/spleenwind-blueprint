@@ -6,16 +6,14 @@ import Announcement from '~/components/widgets/Announcement.astro';
 
 // Footer data is now loaded from DatoCMS in Footer component
 
-import type { MetaData } from '~/types';
-
 export interface Props {
-  metadata?: MetaData;
+  additionalSeo?: any[];
 }
 
-const { metadata } = Astro.props;
+const { additionalSeo } = Astro.props;
 ---
 
-<Layout metadata={metadata}>
+<Layout additionalSeo={additionalSeo || []}>
   <slot name="announcement">
     <Announcement />
   </slot>

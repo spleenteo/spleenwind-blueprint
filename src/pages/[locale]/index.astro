@@ -2,6 +2,18 @@
 import Layout from '~/layouts/PageLayout.astro';
 import { getCurrentLocale, getFallbackLocale, isValidLocale } from '~/lib/i18n';
 
+export async function getStaticPaths() {
+  try {
+    const locales = ['en', 'it']; // Static fallback for build time
+    return locales.map((locale) => ({
+      params: { locale },
+    }));
+  } catch (error) {
+    console.error('Error in getStaticPaths:', error);
+    return [{ params: { locale: 'en' } }];
+  }
+}
+
 // Get and validate current locale
 const { locale } = Astro.params;
 const defaultLocale = await getFallbackLocale();
@@ -41,10 +53,7 @@ import { executeQuery } from '~/lib/datocms/executeQuery';
 import { isDraftModeEnabled } from '~/lib/draftMode';
 import { DraftModeQueryListener } from '~/components/DraftModeQueryListener';
 
-const metadata = {
-  title: 'AstroWind — Free template for creating websites with Astro + Tailwind CSS',
-  ignoreTitleTemplate: true,
-};
+// SEO metadata is now handled by DatoCMS via additionalSeo prop
 
 const query = graphql(
   `
@@ -74,7 +83,7 @@ const query = graphql(
 const draftModeEnabled = isDraftModeEnabled(Astro.cookies);
 const { home } = await executeQuery(query, {
   includeDrafts: draftModeEnabled,
-  variables: { locale: currentLocale },
+  variables: { locale: currentLocale as "en" | "it" },
 });
 
 if (!home) {
@@ -88,8 +97,8 @@ if (!home) {
 <Layout additionalSeo={home._seoMetaTags}>
   <!-- Hero Widget ******************* -->
   {
-    home.sections?.find((section: any) => section._modelApiKey === 'hero_section') ? (
-      home.sections?.map((section: any) => {
+    (home.sections as any[])?.find((section: any) => section._modelApiKey === 'hero_section') ? (
+      (home.sections as any[])?.map((section: any) => {
         if (section._modelApiKey === 'hero_section') {
           return <Hero heroBlock={section} />;
         }
@@ -123,5 +132,5 @@ if (!home) {
     )
   }
 
-  {draftModeEnabled && <DraftModeQueryListener query={query} variables={{ locale: currentLocale }} />}
+  {draftModeEnabled && <DraftModeQueryListener query={query} variables={{ locale: currentLocale as "en" | "it" }} />}
 </Layout>

@@ -3,16 +3,14 @@ import PageLayout from '~/layouts/PageLayout.astro';
 import Header from '~/components/widgets/Header.astro';
 
 // Navigation data is now loaded from DatoCMS in Header component
-import type { MetaData } from '~/types';
-
 export interface Props {
-  metadata?: MetaData;
+  additionalSeo?: any[];
 }
 
-const { metadata } = Astro.props;
+const { additionalSeo } = Astro.props;
 ---
 
-<PageLayout metadata={metadata}>
+<PageLayout additionalSeo={additionalSeo || []}>
   <Fragment slot="announcement">
     <slot name="announcement" />
   </Fragment>
