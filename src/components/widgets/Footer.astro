@@ -2,6 +2,8 @@
 import { Icon } from 'astro-icon/components';
 import { SITE } from 'astrowind:config';
 import { getHomePermalink } from '~/utils/permalinks';
+import { getFooterData } from '~/lib/navigation';
+import { getLocaleFromUrl } from '~/lib/i18n';
 
 interface Link {
   text?: string;
@@ -16,14 +18,17 @@ interface Links {
 }
 
 export interface Props {
-  links: Array<Links>;
-  secondaryLinks: Array<Link>;
-  socialLinks: Array<Link>;
-  footNote?: string;
   theme?: string;
 }
 
-const { socialLinks = [], secondaryLinks = [], links = [], footNote = '', theme = 'light' } = Astro.props;
+const { theme = 'light' } = Astro.props;
+
+// Get current locale from URL for footer
+const currentLocale = await getLocaleFromUrl(Astro.url);
+
+// Get footer data from DatoCMS, fallback to props
+const footerData = await getFooterData(currentLocale);
+const { links, socialLinks, footNote, secondaryLinks } = footerData;
 ---
 
 <footer class:list={[{ dark: theme === 'dark' }, 'relative border-t border-gray-200 dark:border-slate-800 not-prose']}>

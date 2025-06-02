@@ -1,5 +1,5 @@
 site:
-  name: AstroWind
+  name: Spleenteo Astro Blueprint
   site: 'https://astrowind.vercel.app'
   base: '/'
   trailingSlash: false
