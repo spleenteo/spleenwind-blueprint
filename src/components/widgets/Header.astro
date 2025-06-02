@@ -85,16 +85,18 @@ console.log('Navigation data:', links);
   >
     <div class:list={[{ 'mr-auto rtl:mr-0 rtl:ml-auto': position === 'right' }, 'flex justify-between']}>
       <a class="flex items-center" href={getHomePermalink()}>
-        {logo ? (
-          <img 
-            src={logo.url} 
-            alt={logo.alt || SITE?.name || 'Logo'} 
-            title={logo.title || SITE?.name || 'Logo'}
-            class="h-8 w-auto" 
-          />
-        ) : (
-          <span class="font-bold text-xl">{SITE?.name}</span>
-        )}
+        {
+          logo ? (
+            <img
+              src={logo.url}
+              alt={logo.alt || SITE?.name || 'Logo'}
+              title={logo.title || SITE?.name || 'Logo'}
+              class="h-8 w-auto"
+            />
+          ) : (
+            <span class="font-bold text-xl">{SITE?.name}</span>
+          )
+        }
       </a>
       <div class="flex items-center md:hidden">
         <ToggleMenu />

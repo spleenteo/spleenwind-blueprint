@@ -206,11 +206,13 @@ export async function getNavigationData(currentLocale?: string) {
     const navigationData = await transformNavigationData(result, currentLocale);
     return {
       links: navigationData,
-      logo: result.admin.logo ? {
-        url: result.admin.logo.url,
-        alt: result.admin.logo.alt,
-        title: result.admin.logo.title,
-      } : null,
+      logo: result.admin.logo
+        ? {
+            url: result.admin.logo.url,
+            alt: result.admin.logo.alt,
+            title: result.admin.logo.title,
+          }
+        : null,
     };
   } catch (error) {
     console.error('Error fetching navigation data from DatoCMS:', error);
@@ -229,11 +231,13 @@ export async function getFooterData(currentLocale?: string) {
     const footerData = await transformFooterData(result, currentLocale);
     return {
       ...footerData,
-      logo: result.admin.logo ? {
-        url: result.admin.logo.url,
-        alt: result.admin.logo.alt,
-        title: result.admin.logo.title,
-      } : null,
+      logo: result.admin.logo
+        ? {
+            url: result.admin.logo.url,
+            alt: result.admin.logo.alt,
+            title: result.admin.logo.title,
+          }
+        : null,
     };
   } catch (error) {
     console.error('Error fetching footer data from DatoCMS:', error);
