@@ -5,22 +5,20 @@ import Features2 from '~/components/widgets/Features2.astro';
 
 const metadata = {
   title: 'Design System Demo',
-  description: 'Explore our collection of page templates and components'
+  description: 'Explore our collection of page templates and components',
 };
 ---
 
 <Layout metadata={metadata}>
   <!-- Hero Widget ******************* -->
-  <Hero
-    image={{ src: '~/assets/images/hero-image.png', alt: 'Design System Demo' }}
-  >
+  <Hero image={{ src: '~/assets/images/hero-image.png', alt: 'Design System Demo' }}>
     <Fragment slot="title">
       Design System <span class="text-accent dark:text-white">Demo</span>
     </Fragment>
 
     <Fragment slot="subtitle">
-      Explore our collection of static page templates showcasing different layouts and component combinations.
-      Perfect for finding inspiration and understanding AstroWind's capabilities.
+      Explore our collection of static page templates showcasing different layouts and component combinations. Perfect
+      for finding inspiration and understanding AstroWind's capabilities.
     </Fragment>
   </Hero>
 
