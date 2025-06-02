@@ -101,10 +101,10 @@ if (!home) {
 
     <Fragment slot="subtitle">
       <span class="hidden sm:inline">
-        <span class="font-semibold"> {home.subtitle}</span>
+        <span class="font-semibold">{home.subtitle}</span>
       </span>
     </Fragment>
-    <a href="/design-system" data-astro-prefetch> Take a look at the static components you can use </a>
+    <a href="/design-system" data-astro-prefetch>Take a look at the static components you can use</a>
 
     {draftModeEnabled && <DraftModeQueryListener query={query} variables={{ locale: currentLocale }} />}
   </Hero>
