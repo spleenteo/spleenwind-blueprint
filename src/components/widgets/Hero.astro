@@ -13,7 +13,7 @@ const {
 
   id,
   bg = await Astro.slots.render('bg'),
-  
+
   // DatoCMS hero block props (typed by GraphQL schema)
   heroBlock,
 } = Astro.props;
@@ -21,11 +21,13 @@ const {
 // Use heroBlock data if provided, otherwise fall back to existing props
 const heroTitle = heroBlock?.heroTitle || title;
 const heroSubtitle = heroBlock?.heroSubtitle || subtitle;
-const heroActions = heroBlock?.buttons ? heroBlock.buttons.map(button => ({
-  text: button.label,
-  href: button.url,
-  variant: button.primary ? 'primary' : 'secondary'
-})) : actions;
+const heroActions = heroBlock?.buttons
+  ? heroBlock.buttons.map((button) => ({
+      text: button.label,
+      href: button.url,
+      variant: button.primary ? 'primary' : 'secondary',
+    }))
+  : actions;
 ---
 
 <section class="relative md:-mt-[76px] not-prose" {...id ? { id } : {}}>

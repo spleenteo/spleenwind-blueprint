@@ -87,39 +87,41 @@ if (!home) {
 
 <Layout additionalSeo={home._seoMetaTags}>
   <!-- Hero Widget ******************* -->
-  {home.sections?.find((section: any) => section._modelApiKey === 'hero_section') ? (
-    home.sections?.map((section: any) => {
-      if (section._modelApiKey === 'hero_section') {
-        return <Hero heroBlock={section} />;
-      }
-      return null;
-    })
-  ) : (
-    <Hero
-      actions={[
-        {
-          variant: 'primary',
-          text: 'Get template',
-          href: 'https://github.com/onwidget/astrowind',
-          target: '_blank',
-          icon: 'tabler:download',
-        },
-        { text: 'Learn more', href: '#features' },
-      ]}
-      image={{ src: '~/assets/images/hero-image.png', alt: 'AstroWind Hero Image' }}
-    >
-      <Fragment slot="title">
-        {home.title}
-      </Fragment>
+  {
+    home.sections?.find((section: any) => section._modelApiKey === 'hero_section') ? (
+      home.sections?.map((section: any) => {
+        if (section._modelApiKey === 'hero_section') {
+          return <Hero heroBlock={section} />;
+        }
+        return null;
+      })
+    ) : (
+      <Hero
+        actions={[
+          {
+            variant: 'primary',
+            text: 'Get template',
+            href: 'https://github.com/onwidget/astrowind',
+            target: '_blank',
+            icon: 'tabler:download',
+          },
+          { text: 'Learn more', href: '#features' },
+        ]}
+        image={{ src: '~/assets/images/hero-image.png', alt: 'AstroWind Hero Image' }}
+      >
+        <Fragment slot="title">{home.title}</Fragment>
 
-      <Fragment slot="subtitle">
-        <span class="hidden sm:inline">
-          <span class="font-semibold">{home.subtitle}</span>
-        </span>
-      </Fragment>
-      <a href="/design-system" data-astro-prefetch>Take a look at the static components you can use</a>
-    </Hero>
-  )}
+        <Fragment slot="subtitle">
+          <span class="hidden sm:inline">
+            <span class="font-semibold">{home.subtitle}</span>
+          </span>
+        </Fragment>
+        <a href="/design-system" data-astro-prefetch>
+          Take a look at the static components you can use
+        </a>
+      </Hero>
+    )
+  }
 
   {draftModeEnabled && <DraftModeQueryListener query={query} variables={{ locale: currentLocale }} />}
 </Layout>

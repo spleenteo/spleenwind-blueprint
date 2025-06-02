@@ -64,13 +64,15 @@ if (!page) {
 ---
 
 <Layout>
-  {page.sections?.map((section: any) => {
-    if (section._modelApiKey === 'hero_section') {
-      return <Hero heroBlock={section} />;
-    }
-    return null;
-  })}
-  
+  {
+    page.sections?.map((section: any) => {
+      if (section._modelApiKey === 'hero_section') {
+        return <Hero heroBlock={section} />;
+      }
+      return null;
+    })
+  }
+
   <Headline
     subtitle="A statically generated blog example with news, tutorials, resources and other interesting content related to AstroWind"
   >
