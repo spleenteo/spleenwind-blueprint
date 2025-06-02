@@ -1,29 +1,19 @@
 ---
-/** ORIGINAL STUFF
- // import BlogList from '~/components/blog/BlogList.astro'; // o il componente che usi per la lista
- // import Pagination from '~/components/common/Pagination.astro';
- * 
- const currentPage = 1; // o ricavalo dai params se gestisci paginazione
- const perPage = 10; // numero di post per pagina
- // const url = getCanonical(getPermalink(post.permalink, 'post'));
- // const image = (await findImage(post.image)) as ImageMetadata | string | undefined;
- const { post } = Astro.props as Props;
- */
-
-import type { GetStaticPaths } from 'astro';
+import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
 
 import { query } from './_graphql';
 import { executeQuery } from '~/lib/datocms/executeQuery';
-import { getStaticPathsBlogPost, blogPostRobots } from '~/utils/blog';
+import { getStaticPathsBlogPost } from '~/utils/blog';
+import { getPermalink } from '~/utils/permalinks';
+import ToBlogLink from '~/components/blog/ToBlogLink.astro';
 
 import Layout from '~/layouts/PageLayout.astro';
 
 export const prerender = true;
 
-const { allPages, _allPagesMeta } = await executeQuery(Astro, query, {});
+const { allPages } = await executeQuery(query, {});
 
 const posts = allPages; // rinomina per chiarezza
-const totalEntries = _allPagesMeta.count;
 
 export const getStaticPaths = (async () => {
   return await getStaticPathsBlogPost();
@@ -43,12 +33,11 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
                 {post.title}
               </a>
             </h2>
-            <time class="text-sm text-gray-500">{new Date(post._publishedAt).toLocaleDateString('it-IT')}</time>
+            <p class="text-sm text-gray-500">Slug: {post.slug}</p>
           </div>
         </article>
       ))
     }
   </div>
   <ToBlogLink />
-  <RelatedPosts post={post} />
 </Layout>
